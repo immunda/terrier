@@ -4,10 +4,10 @@ setup(
     name="terrier",
     author="Phil Howell",
     author_email="phil@quae.co.uk",
-    version="0.0.1dev",
+    version="0.1.dev3",
     url="https://github.com/immunda/terrier",
     install_requires=["click",],
-    pymodules=["terrier"],
+    py_modules=["terrier"],
     entry_points="""
         [console_scripts]
         terrier=terrier:cli

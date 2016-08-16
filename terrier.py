@@ -46,10 +46,10 @@ def remote(name):
         terraform_cmd = terraform_cmd.strip()
         subprocess.call(terraform_cmd, shell=True)
 
-@cli.command()
-def plan(*args, **kwargs):
-    click.echo(args)
-    click.echo(kwargs)
+# @cli.command()
+# def plan(*args, **kwargs):
+#     click.echo(args)
+#     click.echo(kwargs)
 
 
 if __name__ == '__main__':

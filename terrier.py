@@ -28,8 +28,9 @@ def _load_config(filename=CONFIG_FILENAME, env=None):
 
 @cli.command()
 @click.option("-d", "--disable", default=False, is_flag=True, help="Disables a remote.")
+@click.option("-v", "--verbose", default=False, is_flag=True, help="Verbose output.")
 @click.argument("name")
-def remote(disable, name):
+def remote(disable, verbose, name):
     """
     Wrapper for `terraform remote` command
 
@@ -48,10 +49,10 @@ def remote(disable, name):
 
         state = remote_conf.get("state", None)
         if state is not None:
-            terraform_cmd += "-state=%s" % state
+            terraform_cmd += "-state=%s " % state
 
         if disable:
-            terraform_cmd += "-disable"
+            terraform_cmd += "-disable "
         else:
             terraform_cmd += "-backend=%s " % backend
 
@@ -59,6 +60,9 @@ def remote(disable, name):
                 terraform_cmd += "-backend-config=\"%s=%s\" " % (key, val)
 
         terraform_cmd = terraform_cmd.strip()
+        if verbose:
+            click.echo("Running terraform command: '%s'" % terraform_cmd)
+
         subprocess.call(terraform_cmd, shell=True)
 
 if __name__ == '__main__':

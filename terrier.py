@@ -27,8 +27,13 @@ def _load_config(filename=CONFIG_FILENAME, env=None):
     return conf
 
 @cli.command()
+@click.option("-d", "--disable", default=False, is_flag=True, help="Disables a remote.")
 @click.argument("name")
-def remote(name):
+def remote(disable, name):
+    """
+    Wrapper for `terraform remote` command
+
+    """
     conf = _load_config(env=name)
     remote_conf = conf.get("remote", None)
     if remote_conf is None:
@@ -40,17 +45,21 @@ def remote(name):
         exit(1)
     else:
         terraform_cmd = "terraform remote config "
-        terraform_cmd += "-backend=%s " % backend
-        for key, val in remote_conf.get("config", {}).items():
-            terraform_cmd += "-backend-config=\"%s=%s\" " % (key, val)
+
+        state = remote_conf.get("state", None)
+        if state is not None:
+            terraform_cmd += "-state=%s" % state
+
+        if disable:
+            terraform_cmd += "-disable"
+        else:
+            terraform_cmd += "-backend=%s " % backend
+
+            for key, val in remote_conf.get("config", {}).items():
+                terraform_cmd += "-backend-config=\"%s=%s\" " % (key, val)
+
         terraform_cmd = terraform_cmd.strip()
         subprocess.call(terraform_cmd, shell=True)
-
-# @cli.command()
-# def plan(*args, **kwargs):
-#     click.echo(args)
-#     click.echo(kwargs)
-
 
 if __name__ == '__main__':
     cli()

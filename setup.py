@@ -4,7 +4,7 @@ setup(
     name="terrier",
     author="Phil Howell",
     author_email="phil@quae.co.uk",
-    version="0.1.dev3",
+    version="0.2",
     url="https://github.com/immunda/terrier",
     install_requires=["click",],
     py_modules=["terrier"],
